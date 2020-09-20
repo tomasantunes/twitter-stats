@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Most Active</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap/css/bootstrap.min.css') }}">
+</head>
+<body>
+    <h1>Most Active</h1>
+    
+    {% for i in most_active %}
+        <h3>{{i.day}}</h3>
+        <ol>
+            {% for user in i.users %}
+                <li>{{user}}</li>
+            {% endfor %}
+        </ol>
+    {% endfor %}
+    
+</body>
+</html>

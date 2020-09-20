@@ -1,10 +1,24 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<title>Twitter Stats</title>
+
+		<link rel="stylesheet" href="{{ url_for('static', filename='bootstrap/css/bootstrap.min.css') }}">
 	</head>
 	<body>
 		<h1>Twitter Stats</h1>
 		<p>Total tweets: {{total_tweets}}</p>
+		<p>Total users: {{total_users}}</p>
+
+		<a href="/bios-keywords">Bios Keywords</a>
+		<a href="/most-active">Most Active</a>
+
+		<h1>Search Bios</h1>
+		<form action="/search-bios" method="get">
+			<input type="text" name="query">
+			<input type="submit">
+		</form>
 	</body>
 </html>
