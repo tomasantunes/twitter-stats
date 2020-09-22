@@ -54,6 +54,11 @@ def mostActive():
 	most_active = getActiveUsers(timelines)
 	return render_template('most-active.html', most_active=most_active)
 
+@app.route('/top-tweets')
+def topTweetsRoute():
+	top_tweets = getTopTweets()
+	return render_template('top-tweets.html', top_tweets=top_tweets)
+
 @app.route('/users')
 def usersRoute():
 	users = getUsers()
@@ -74,15 +79,18 @@ def getTopTweets():
 	rows = cur.fetchall()
 	
 	rows = sorted(rows, key=lambda x: x[5], reverse=True)
-	
+	top_tweets = []
 	with open('top_tweets.txt', 'w') as file:
 		count = 0
 		for row in rows:
 			file.write("#" + str(count) + "\n")
 			file.write("Author: "+row[1] + "\n")
 			file.write("Tweet: "+ str(row[2].encode('utf-8')) + "\n")
+			if count < 10:
+				top_tweets.append({"index": count + 1, "name": row[1], "tweet": row[2]})
 			count += 1
 		file.close()
+	return top_tweets
 	
 def updateTweets():
 	print("Starting")

@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Top Tweets</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap/css/bootstrap.min.css') }}">
+</head>
+<body>
+    <h1>Top Tweets</h1>
+    
+        <ol>
+            {% for tweet in top_tweets %}
+                <li><b>{{tweet.name}}:</b> {{ tweet.tweet }}</li>
+            {% endfor %}
+        </ol>
+    
+</body>
+</html>
