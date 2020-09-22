@@ -151,7 +151,6 @@ def loadTimelines():
 def getHappyHour(dates):
 	hours = {}
 	for date in dates:
-		date = parse(date)
 		if date.hour in hours:
 			hours[date.hour] += 1
 		else:
@@ -160,6 +159,7 @@ def getHappyHour(dates):
 	
 def getActiveUsers(timelines):
 	days = {}
+	happy_hours = {}
 	for user in timelines:
 		for tweet in user['tweets']:
 			date = parse(tweet['date'])
@@ -168,6 +168,14 @@ def getActiveUsers(timelines):
 				days[date_str].append(user['screen_name'])
 			elif date_str not in days:
 				days[date_str] = [user['screen_name']]
+	for user in timelines:
+		for tweet in user['tweets']:
+			date = parse(tweet['date'])
+			date_str = date.strftime("%b %d %Y")
+			if date_str in happy_hours:
+				happy_hours[date_str].append(date)
+			elif date_str not in happy_hours:
+				happy_hours[date_str] = [date]
 	days_users = {}
 	for day in days:
 		days_users[day] = {}
@@ -182,7 +190,7 @@ def getActiveUsers(timelines):
 	for day in sorted(days_users.keys()):
 		active_users = sortbyval(days_users[day])
 		output_str += str(day) + "\n"
-		most_active_users.append({"day": str(day), "users": []})
+		most_active_users.append({"day": str(day), "users": [], "happy_hour": getHappyHour(happy_hours[day])})
 		for user in active_users:
 			output_str += user + "\n"
 			most_active_users[c]["users"].append(user)

@@ -112,9 +112,9 @@ def downloadTweets2():
 	con = sqlite3.connect('tweets.db')
 	cur = con.cursor()
 	count = 0
-	statuses = api.home_timeline() 
+	max_tweets = 100
 	try:
-		for status in statuses:
+		for status in tweepy.Cursor(api.home_timeline).items(max_tweets):
 			try:
 				date = status._json['created_at']
 				date = parse(date)
@@ -127,8 +127,7 @@ def downloadTweets2():
 			except sqlite3.Error as e:
 				print("Error %s:", e.args[0])
 			count += 1
-			if (count > 100):
-				break
+			print(count)
 		#time.sleep(5)
 	except tweepy.TweepError:
 		print("TweepError")

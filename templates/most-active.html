@@ -12,6 +12,9 @@
     
     {% for i in most_active %}
         <h3>{{i.day}}</h3>
+        <div>
+            <b>Happy Hour: </b><span>{{ i.happy_hour }}h</span>
+        </div>
         <ol>
             {% for user in i.users %}
                 <li>{{user}}</li>
