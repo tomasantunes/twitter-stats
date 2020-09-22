@@ -33,13 +33,11 @@ def home():
 	total_tweets = getTotalTweets()
 	users = getUsers() 
 	total_users = len(users)
-	bios_keywords = getBioKeywords(getUserBios(users))
-	return render_template('index.html', total_tweets=total_tweets, bios_keywords=bios_keywords, total_users=total_users)
+	return render_template('index.html', total_tweets=total_tweets, total_users=total_users)
 
 @app.route('/bios-keywords')
 def biosKeywords():
-	users = getUsers() 
-	total_users = len(users)
+	users = getUsers()
 	bios_keywords = getBioKeywords(getUserBios(users))
 	return render_template('bios-keywords.html', bios_keywords=bios_keywords)
 
@@ -224,14 +222,14 @@ def getBioKeywords(bios):
 				words[word] += 1
 			else:
 				words[word] = 1
-	words = sorted(words, key=words.get, reverse=True)
+	listofTuples = sorted(words.items(), reverse=True, key=lambda x: x[1])
 
 	with open('bio_keywords', 'w') as file:
-		for word in words:
-			file.write(str(word.encode("utf-8")) + "\n")
+		for elem in listofTuples:
+			file.write(str(elem[1]) + " - " + str(elem[0].encode("utf-8")) + "\n")
 		file.close()
 
-	return words
+	return listofTuples
 
 def searchBios(query):
 	users = getUsers()

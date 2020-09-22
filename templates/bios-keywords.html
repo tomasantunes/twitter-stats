@@ -10,7 +10,7 @@
 <body>
     <h1>Bios Keywords</h1>
     {% for word in bios_keywords %} 
-        <li>{{word}}</li> 
+        <li>{{word[1]}} - {{word[0]}}</li>
     {% endfor %}
 </body>
 </html>
