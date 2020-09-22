@@ -42,7 +42,7 @@ def biosKeywords():
 	return render_template('bios-keywords.html', bios_keywords=bios_keywords)
 
 @app.route('/search-bios')
-def searchBios():
+def searchBiosRoute():
 	query = request.args.get('query')
 	results = searchBios(query)
 	n_results = len(results)
