@@ -136,8 +136,9 @@ def downloadTweets2():
 		print("RateLimitError")
 		time.sleep(60*15)
 	con.close()
+	print("Downloaded " + str(count) + " tweets.")
 	print("Finished")
 
-fetch_date = [20, 9, 2020]
+fetch_date = [22, 9, 2020]
 main()
 downloadTweets2()

@@ -52,7 +52,6 @@ def searchBiosRoute():
 def mostActive():
 	timelines = loadTimelines()
 	most_active = getActiveUsers(timelines)
-	print(most_active)
 	return render_template('most-active.html', most_active=most_active)
 	
 def getTotalTweets():
@@ -147,7 +146,6 @@ def loadTimelines():
 	timelines2 = []
 	for i in timelines:
 		timelines2.append(timelines[i])
-	print(timelines2)
 	return timelines2
 		
 def getHappyHour(dates):
@@ -165,10 +163,11 @@ def getActiveUsers(timelines):
 	for user in timelines:
 		for tweet in user['tweets']:
 			date = parse(tweet['date'])
-			if date.day in days:
-				days[date.day].append(user['screen_name'])
-			elif date.day not in days:
-				days[date.day] = [user['screen_name']]
+			date_str = date.strftime("%b %d %Y")
+			if date_str in days:
+				days[date_str].append(user['screen_name'])
+			elif date_str not in days:
+				days[date_str] = [user['screen_name']]
 	days_users = {}
 	for day in days:
 		days_users[day] = {}
@@ -182,8 +181,8 @@ def getActiveUsers(timelines):
 	c = 0
 	for day in sorted(days_users.keys()):
 		active_users = sortbyval(days_users[day])
-		output_str += "Day " + str(day) + "\n"
-		most_active_users.append({"day": "Day " + str(day), "users": []})
+		output_str += str(day) + "\n"
+		most_active_users.append({"day": str(day), "users": []})
 		for user in active_users:
 			output_str += user + "\n"
 			most_active_users[c]["users"].append(user)
