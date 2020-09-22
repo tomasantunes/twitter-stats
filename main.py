@@ -53,6 +53,12 @@ def mostActive():
 	timelines = loadTimelines()
 	most_active = getActiveUsers(timelines)
 	return render_template('most-active.html', most_active=most_active)
+
+@app.route('/users')
+def usersRoute():
+	users = getUsers()
+	users_keywords = getUsersKeywords(users)
+	return render_template('users.html', users_keywords=users_keywords)
 	
 def getTotalTweets():
 	con = sqlite3.connect('tweets.db')
@@ -212,6 +218,33 @@ def getUsers():
 	filename = target + "_followers.json"
 	user_objects = try_load_or_process(filename, get_user_objects, follower_ids)
 	return user_objects
+
+def getTweetsByUser(screen_name):
+	con = sqlite3.connect('tweets.db')
+	cur = con.cursor()    
+	cur.execute("SELECT * FROM tweets WHERE screen_name = ?", (screen_name,))
+	rows = cur.fetchall()
+	return rows
+
+def getUsersKeywords(users):
+	users_keywords = []
+	for user in users:
+		name = user['screen_name']
+		tweets = getTweetsByUser(name)
+		words = {}
+		for tweet in tweets:
+			tweet = re.sub(r"[^\w\s]", '', tweet[2])
+			tweet_words = tweet.split()
+			for word in tweet_words:
+				if (word in words):
+					words[word] += 1
+				else:
+					words[word] = 1
+		listofTuples = sorted(words.items(), reverse=True, key=lambda x: x[1])
+		keywords = [i[0] for i in listofTuples][:10]
+		users_keywords.append({"screen_name": name, "keywords": keywords})
+
+	return users_keywords
 
 def getUserBios(users):
 	bios = []

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Most Active</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap/css/bootstrap.min.css') }}">
+</head>
+<body>
+    <h1>Users</h1>
+    
+    {% for user in users_keywords %}
+        <h3>{{user.screen_name}}</h3>
+        <ul>
+            {% for keyword in user.keywords %}
+                <li>{{keyword}}</li>
+            {% endfor %}
+        </ul>
+    {% endfor %}
+    
+</body>
+</html>
